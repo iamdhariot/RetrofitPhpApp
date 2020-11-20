@@ -1,5 +1,7 @@
 package iamdhariot.github.retrofitphpapp.fragments
 
+
+import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.LayoutInflater
@@ -10,11 +12,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import iamdhariot.github.retrofitphpapp.R
+import iamdhariot.github.retrofitphpapp.activities.NavDrawerActivity
 import iamdhariot.github.retrofitphpapp.apis.APIService
-import iamdhariot.github.retrofitphpapp.essential.BASE_URL
-import iamdhariot.github.retrofitphpapp.essential.isEmailValid
-import iamdhariot.github.retrofitphpapp.essential.isNameValid
-import iamdhariot.github.retrofitphpapp.essential.isPasswordValid
+import iamdhariot.github.retrofitphpapp.essentials.BASE_URL
+import iamdhariot.github.retrofitphpapp.essentials.isEmailValid
+import iamdhariot.github.retrofitphpapp.essentials.isNameValid
+import iamdhariot.github.retrofitphpapp.essentials.isPasswordValid
+import iamdhariot.github.retrofitphpapp.helper.SharedPrefManager
 import iamdhariot.github.retrofitphpapp.models.Result
 import iamdhariot.github.retrofitphpapp.models.User
 import retrofit2.Call
@@ -65,17 +69,16 @@ class SignUpFragment: Fragment(){
         }
 
         buttonSignUp.setOnClickListener {
-             // perform sign up if validations are true
+
             val email = editTextEmail.text.toString().trim()
             val password  = editTextPassword.text.toString().trim()
             val name = editTextFullName.text.toString().trim()
             val gender: String = gender
             signUp(email, password, name, gender)
+            // perform sign up if validations are true
             /*if(!validation(email, password, name, gender)) {
                 // here  we are going to perform sign up
                 signUp(email, password, name, gender)
-
-
             }*/
         }
     }
@@ -112,9 +115,19 @@ class SignUpFragment: Fragment(){
                 // hide progress bar
                 showProgressBar("",false)
                 // Displaying  the message from the response as toast
-                Toast.makeText(activity,response?.body()?.message,Toast.LENGTH_LONG).show()
+                if(response!=null ) {
+                    Toast.makeText(activity, response.body().message, Toast.LENGTH_LONG).show()
+                    // if there is no error
+                    if (!response.body().error) {
+                        // starting profile activity (i.e NavDrawerActivity)
+                        // saving the data to the shared preference
+                        SharedPrefManager
+                                .getInstance(activity?.applicationContext)
+                                .userLogin(response.body().user)
+                        startActivity(Intent(activity, NavDrawerActivity::class.java))
+                    }
+                }
             }
-
             override fun onFailure(call: Call<Result>?, t: Throwable?) {
                 // hide progress bar
                 showProgressBar("",false)

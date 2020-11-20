@@ -9,8 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import iamdhariot.github.retrofitphpapp.essential.isEmailValid
-import iamdhariot.github.retrofitphpapp.essential.isPasswordValid
+import iamdhariot.github.retrofitphpapp.essentials.isEmailValid
+import iamdhariot.github.retrofitphpapp.essentials.isPasswordValid
 import iamdhariot.github.retrofitphpapp.activities.NavDrawerActivity
 import iamdhariot.github.retrofitphpapp.R
 

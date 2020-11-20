@@ -1,4 +1,4 @@
-package iamdhariot.github.retrofitphpapp.essential
+package iamdhariot.github.retrofitphpapp.essentials
 
 // extension functions
 // for check email and/or password is valid or not
