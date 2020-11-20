@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="max_padding" type="dimen" >10dp</item>
+    <item name="max_margin" type="dimen">10dp</item>
+    <item name="button_padding" type="dimen" >12dp</item>
+    <item name="button_margin" type="dimen">12dp</item>
+    <item name="primary_text_size" type="dimen">18sp</item>
+    <item name="secondary_text_size" type="dimen">14sp</item>
+    <item name="button_min_width" type="dimen">160dp</item>
+</resources>

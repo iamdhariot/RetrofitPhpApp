@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/max_padding"
+            >
+            <TextView
+                android:id="@+id/text_view_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dharmendra Gameti"
+                android:textSize="@dimen/primary_text_size"
+                android:padding="@dimen/max_padding"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:id="@+id/text_view_titile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Greetings!"
+                android:textSize="@dimen/secondary_text_size"
+                android:padding="@dimen/max_padding"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/text_view_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lorem ipsum dolor sit camet lore ipsum dolor sit camet lorem ipsum "
+                android:textSize="@dimen/secondary_text_size"
+                android:padding="@dimen/max_padding"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:id="@+id/text_view_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="30/04/1992 10:25am"
+                android:textSize="@dimen/secondary_text_size"
+                android:padding="@dimen/max_padding"
+                android:layout_gravity="center"
+                android:textStyle="italic"
+                />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
