@@ -1,16 +1,24 @@
 package iamdhariot.github.retrofitphpapp.activities
 
+import android.content.Intent
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.MenuItem
 import android.widget.Toast
-import  androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.navigation.NavigationView
 import iamdhariot.github.retrofitphpapp.R
+import iamdhariot.github.retrofitphpapp.fragments.HomeFragment
+import iamdhariot.github.retrofitphpapp.fragments.MessagesFragment
+import iamdhariot.github.retrofitphpapp.fragments.ProfileFragment
+import iamdhariot.github.retrofitphpapp.helper.SharedPrefManager
+
 
 class NavDrawerActivity : AppCompatActivity() {
 
@@ -21,6 +29,12 @@ class NavDrawerActivity : AppCompatActivity() {
 
     //Make sure to be using androidx.appcompat.app.ActionBarDrawerToggle version
     private lateinit var drawerToggle: ActionBarDrawerToggle
+
+    // fragments declaration
+    private lateinit var homeFragment: HomeFragment
+    private lateinit var messagesFragment: MessagesFragment
+    private lateinit var profileFragment: ProfileFragment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +55,19 @@ class NavDrawerActivity : AppCompatActivity() {
         // setup the nav drawer menu items
         setupDrawerContent(navDrawerView)
 
-        // fragment initialize
+        // fragment initialization
+        homeFragment = HomeFragment()
+        profileFragment = ProfileFragment()
+        messagesFragment = MessagesFragment()
+
 
         // to start the initial fragment on the activity create
         if(savedInstanceState==null){
-            //adding the default fragment on activity create
-           // supportFragmentManager.beginTransaction().add().commit()
+            //adding the default fragment on activity create (i.e fragment home)
+           supportFragmentManager
+                   .beginTransaction()
+                   .add(R.id.frame_layout,homeFragment)
+                   .commit()
             title ="Home"
         }
         // setup toggle to display the hamburger icon with animation
@@ -60,9 +81,9 @@ class NavDrawerActivity : AppCompatActivity() {
     private fun setupDrawerToggle(): ActionBarDrawerToggle {
         // Note: make sure you pass the valid toolbar reference. ActionBarToggle() doesn't require it.
         // and will not render the hamburger icon without it
-        return ActionBarDrawerToggle(NavDrawerActivity@this, drawerLayout,
-            R.string.drawer_open,
-            R.string.drawer_close
+        return ActionBarDrawerToggle(NavDrawerActivity@ this, drawerLayout,
+                R.string.drawer_open,
+                R.string.drawer_close
         )
 
     }
@@ -88,34 +109,39 @@ class NavDrawerActivity : AppCompatActivity() {
     private fun selectDrawerMenuItem(menuItem: MenuItem) {
         when(menuItem.itemId){
             R.id.nav_home -> {
-                // show home fragment
-
+                setFragment(homeFragment)
                 highLightMenuItemAndTitle(menuItem)
             }
             R.id.nav_profile -> {
-                // show home fragment
-
+                setFragment(profileFragment)
                 highLightMenuItemAndTitle(menuItem)
             }
             R.id.nav_messages -> {
-                // show home fragment
-
+                setFragment(messagesFragment)
                 highLightMenuItemAndTitle(menuItem)
             }
             R.id.nav_logout -> {
-                // show home fragment
-                Toast.makeText(NavDrawerActivity@this,"logging out",Toast.LENGTH_SHORT).show()
+                // log out the user
+                logout()
             }
         }
         // close the NavDrawer
         drawerLayout.closeDrawers()
     }
 
+    private fun setFragment(fragment: Fragment) {
+        val fragmentManager: FragmentManager = supportFragmentManager
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.frame_layout,fragment)
+                .commit()
+
+    }
+
     // highlight the selected item has been done by the NavigationView except logout
     private fun highLightMenuItemAndTitle(menuItem: MenuItem) {
         // highlight the selected item has been done by the NavigationView
         menuItem.isChecked = true
-
         //set action bar title
         title= menuItem.title
     }
@@ -125,6 +151,15 @@ class NavDrawerActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // perform user logout
+    fun logout(){
+        Toast.makeText(this,"logging out...",Toast.LENGTH_SHORT).show()
+        // removing the user login data from shared preference
+        SharedPrefManager.getInstance(applicationContext).logout()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish();
     }
 
 }

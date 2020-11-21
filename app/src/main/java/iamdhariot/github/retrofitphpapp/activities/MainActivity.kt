@@ -3,7 +3,6 @@
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity.CENTER
 import android.widget.Toast
 import iamdhariot.github.retrofitphpapp.R
 import iamdhariot.github.retrofitphpapp.fragments.MainFragment

@@ -32,7 +32,8 @@ data class User constructor(
         this.email = email
         this.gender = gender
     }
-
-
 }
-
+// to get users
+data class Users(
+        var users: ArrayList<User>
+)

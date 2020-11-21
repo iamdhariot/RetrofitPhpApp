@@ -83,7 +83,7 @@ class SignUpFragment: Fragment(){
         }
     }
 
-    // perform sign up using retrofit
+    // here we perform sign up using retrofit register api call
     private fun signUp(email: String, password: String, name: String, gender: String) {
         // defining a progress dialog to show while signing up
         showProgressBar("Signing up...", true)
@@ -119,12 +119,15 @@ class SignUpFragment: Fragment(){
                     Toast.makeText(activity, response.body().message, Toast.LENGTH_LONG).show()
                     // if there is no error
                     if (!response.body().error) {
+                        Toast.makeText(activity, "Signing in...", Toast.LENGTH_LONG).show()
                         // starting profile activity (i.e NavDrawerActivity)
                         // saving the data to the shared preference
+
                         SharedPrefManager
                                 .getInstance(activity?.applicationContext)
                                 .userLogin(response.body().user)
                         startActivity(Intent(activity, NavDrawerActivity::class.java))
+                        activity?.finish()
                     }
                 }
             }

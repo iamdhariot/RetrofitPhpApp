@@ -5,29 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import iamdhariot.github.retrofitphpapp.R
+import iamdhariot.github.retrofitphpapp.apis.APIService
+import iamdhariot.github.retrofitphpapp.essentials.BASE_URL
+import iamdhariot.github.retrofitphpapp.helper.UserAdapter
+import iamdhariot.github.retrofitphpapp.models.Users
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-/*// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"*/
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-   /* // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null*/
+
+    private lateinit var recyclerViewUsers: RecyclerView
+    private lateinit var userAdapter: UserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       /* arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -36,23 +34,40 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-  /*  companion object {
-        *//**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         *//*
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                HomeFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerViewUsers = view.findViewById(R.id.recycler_view_users)
+        recyclerViewUsers.setHasFixedSize(true)
+        recyclerViewUsers.layoutManager = LinearLayoutManager(activity)
+        Toast.makeText(activity,"This is home fragment",Toast.LENGTH_LONG).show()
+        getAllUsers()
+    }
+
+    private fun getAllUsers(){
+        // Getting all users using retrofit
+        val retrofit: Retrofit = Retrofit
+                .Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        val apiService: APIService = retrofit.create(APIService::class.java)
+        val call: Call<Users> = apiService.getUsers()
+        call.enqueue(object: Callback<Users>{
+            override fun onResponse(call: Call<Users>?, response: Response<Users>?) {
+                if(response!=null){
+                    // setting the users to the adapter
+                   // Toast.makeText(activity,response.body().users.toString(),Toast.LENGTH_LONG).show()
+                    userAdapter = UserAdapter(response.body().users, activity)
+
+                    recyclerViewUsers.adapter = userAdapter
                 }
-    }*/
+            }
+            override fun onFailure(call: Call<Users>?, t: Throwable?) {
+                Toast.makeText(activity,t?.message,Toast.LENGTH_LONG).show()
+            }
+
+        })
+    }
+
 }
