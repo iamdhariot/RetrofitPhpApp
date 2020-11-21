@@ -1,5 +1,6 @@
 package iamdhariot.github.retrofitphpapp.fragments
 
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -40,7 +41,6 @@ class HomeFragment : Fragment() {
         recyclerViewUsers = view.findViewById(R.id.recycler_view_users)
         recyclerViewUsers.setHasFixedSize(true)
         recyclerViewUsers.layoutManager = LinearLayoutManager(activity)
-        Toast.makeText(activity,"This is home fragment",Toast.LENGTH_LONG).show()
         getAllUsers()
     }
 
@@ -58,9 +58,10 @@ class HomeFragment : Fragment() {
                 if(response!=null){
                     // setting the users to the adapter
                    // Toast.makeText(activity,response.body().users.toString(),Toast.LENGTH_LONG).show()
-                    userAdapter = UserAdapter(response.body().users, activity)
-
-                    recyclerViewUsers.adapter = userAdapter
+                    if(activity!=null) {
+                        userAdapter = UserAdapter(response.body().users, activity!!)
+                        recyclerViewUsers.adapter = userAdapter
+                    }
                 }
             }
             override fun onFailure(call: Call<Users>?, t: Throwable?) {

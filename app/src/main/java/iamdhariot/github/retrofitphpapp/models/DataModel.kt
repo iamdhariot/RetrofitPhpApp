@@ -2,6 +2,7 @@ package iamdhariot.github.retrofitphpapp.models
 
 import com.google.gson.annotations.SerializedName
 // primary constructor
+
 data class Result(
         @SerializedName("error") var error: Boolean,
         @SerializedName("message") var message: String,
@@ -36,4 +37,25 @@ data class User constructor(
 // to get users
 data class Users(
         var users: ArrayList<User>
+)
+
+// to send message
+data class MessageResponse(
+        var error: Boolean,
+        var message: String
+)
+
+// to get message
+data class Message(
+        var id: Int,
+        var from: String,
+        var to: String,
+        var title: String,
+        var message: String,
+        var sent: String
+)
+
+// to get all messages
+data class Messages(
+        var messages: ArrayList<Message>
 )
